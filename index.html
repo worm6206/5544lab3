@@ -2,25 +2,51 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <!-- <link type="text/css" rel="stylesheet" href="style.css"/> -->
-    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script type="text/javascript" src="d3/d3.js"></script>
     <script type="text/javascript" src="d3/d3.geom.js"></script>
     <script type="text/javascript" src="d3/d3.layout.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="d3/fisheye.js"></script>
-    
+    <style type="text/css">
+      .bottomleft{
+        position: fixed;
+        color: #FF5722;
+        bottom: 0;
+        left: 0;
+        padding-left: 15px;
+      }
+      .topleft{
+        position: fixed;
+        color: #FF5722;
+        top: 0;
+        left: 0;
+        padding-left: 15px;
+      }
+      .pause-text{
+        position: fixed;
+        bottom: 2%;
+        left: 50%;
+        margin-left: -28px;
+        color: white;
+        opacity: 0;
+      }
+    </style>
 
   </head>
   <body>
 <script>
 
-var width = window.innerWidth-50,
-    height = window.innerHeight-50,
+var width = window.innerWidth-10,
+    height = window.innerHeight-10,
     root;
 
-    var paused = false;
+    var paused = false,
+      showTag = false;
 
 var force = d3.layout.force()
     .linkDistance(80)
@@ -96,9 +122,12 @@ function update(){
   nodeEnter.append("circle")
       .attr("r", 8);
 
-  // nodeEnter.append("text")
-  //     .attr("dy", ".35em")
-  //     .text(function(d) { return d.name; });
+if(showTag){
+    node.append("text")
+        .attr("dy", ".35em")
+        .attr("class", "tag")
+        .text(function(d) { return d.name; });
+      }
 
   node.select("circle")
       .style("fill", "#00ADB5");
@@ -131,17 +160,39 @@ function checkKey(e) {
 
     e = e || window.event;
 
-    if (e.keyCode == '38') {
-        // up arrow
-        // force.stop();
-        paused = true;
-        update();
+    if (e.keyCode == '80') {
+        // P
+        if(paused==false){
+          $('#paused1').text("enabled");
+          $('#paused2').text("");
+          $('.pause-text').css('opacity', '1');
+          paused = true;
+          update();
+        }else{
+          $('#paused1').text("");
+          $('#paused2').text("disabled");
+          $('.pause-text').css('opacity', '0');
+          paused = false;
+          update();
+        }
     }
-    else if (e.keyCode == '40') {
-        // down arrow
-        // force.start();
-        paused = false;
-        update();
+    else if (e.keyCode == '84') {
+        // T
+        if(showTag==false){
+          $('#tag1').text("enabled");
+          $('#tag2').text("");
+          showTag = true;
+          update();
+        }else{
+          $('#tag1').text("");
+          $('#tag2').text("disabled");
+          showTag = false;
+          $('.tag').remove();
+          // update();
+        }
+        if(paused){
+          force.stop();
+        }
     }
     else if (e.keyCode == '37') {
        // left arrow
@@ -201,5 +252,45 @@ function zoom() {
 }
 
 </script>
+<div style="color: red;" class="pause-text"><h3><span class="label label-danger">Paused</span></h3></div>
+<div class="bottomleft">
+  <table class="table">
+    <caption>Keyboard instructions</caption>
+    <tbody>
+      <tr>
+        <td>P</td>
+        <td>Pause</td>
+      </tr>
+      <tr>
+        <td>T</td>
+        <td>Tags On/Off</td>
+      </tr>
+      <tr>
+        <td>C</td>
+        <td>Change mouse modes</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="topleft">
+      <table class="table">
+        <caption>Graph Info
+        </caption>
+        <tbody>
+          <tr>
+            <td>Fisheye</td>
+            <td><span id="paused1" class="label label-primary"></span><span id="paused2" class="label label-danger">disabled</span></td>
+          </tr>
+          <tr>
+            <td>Tags</td>
+            <td><span id="tag1" class="label label-primary"></span><span id="tag2" class="label label-danger">disbaled</span></td>
+          </tr>
+          <tr>
+            <td>Click Mode</td>
+            <td><span class="click"></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </body>
 </html>
