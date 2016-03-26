@@ -75,7 +75,7 @@ d3.json("graph.json", function(error, json) {
 
   link.enter().insert("line", ".node")
       .attr("class", "link")
-      .attr("stroke-width",2)
+      .attr("stroke-width",3)
       .attr("stroke", "#303841");
 
   // Update nodes.
@@ -88,7 +88,7 @@ d3.json("graph.json", function(error, json) {
       .on("click", click);
 
   nodeEnter.append("circle")
-      .attr("r", 5);
+      .attr("r", 8);
 
   // nodeEnter.append("text")
   //     .attr("dy", ".35em")
