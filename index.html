@@ -102,8 +102,9 @@ d3.json("graph.json", function(error, json) {
   fisheye.focus(d3.mouse(this));
 
   node.each(function(d) { d.fisheye = fisheye(d); })
-      .attr("transform", function(d) { return "translate(" + fisheye(d).x + "," + fisheye(d).y + ")"; })
-      .attr("r", function(d) { return d.fisheye.z * 4.5; });
+      .attr("transform", function(d) { return "translate(" + fisheye(d).x + "," + fisheye(d).y + ")scale(" + d.fisheye.z * 1 + ")"; })
+      // .attr("transform", function(d) { return "scale(" + d.fisheye.z * 4.5 + ")"; })
+      // .attr("r", function(d) { return d.fisheye.z * 8; });
 
   
   link.attr("x1", function(d) { return fisheye(d.source).x; })
