@@ -20,6 +20,8 @@ var width = window.innerWidth-50,
     height = window.innerHeight-50,
     root;
 
+    var paused = false;
+
 var force = d3.layout.force()
     .linkDistance(80)
     .charge(-120)
@@ -55,6 +57,10 @@ d3.json("graph.json", function(error, json) {
   if (error) throw error;
 
   root = json;
+  update()
+})
+
+function update(){
   // var n = data.children.children.length;
   // console.log(n);
   var nodes = flatten(root),
@@ -97,6 +103,10 @@ d3.json("graph.json", function(error, json) {
   node.select("circle")
       .style("fill", "#00ADB5");
 
+  if (paused) {
+    force.stop();
+  }
+
   svg.on("mousemove", function() {
   fisheye.focus(d3.mouse(this));
 
@@ -113,7 +123,7 @@ d3.json("graph.json", function(error, json) {
 });
 
 
-})
+}
 
 document.onkeydown = checkKey;
 
@@ -123,11 +133,15 @@ function checkKey(e) {
 
     if (e.keyCode == '38') {
         // up arrow
-        force.stop();
+        // force.stop();
+        paused = true;
+        update();
     }
     else if (e.keyCode == '40') {
         // down arrow
-        force.start();
+        // force.start();
+        paused = false;
+        update();
     }
     else if (e.keyCode == '37') {
        // left arrow
