@@ -44,8 +44,7 @@ svg.append("rect")
     .attr("y",-999999)
     .attr("width", 999999*2)
     .attr("height", 999999*2)
-    // .style("fill", "red")
-    .style("opacity", 0);
+    .style("fill", "#EEEEEE");
 
 
 
@@ -77,7 +76,7 @@ d3.json("graph.json", function(error, json) {
   link.enter().insert("line", ".node")
       .attr("class", "link")
       .attr("stroke-width",2)
-      .attr("stroke", "black");
+      .attr("stroke", "#303841");
 
   // Update nodes.
   node = node.data(nodes, function(d) { return d.id; });
@@ -96,7 +95,7 @@ d3.json("graph.json", function(error, json) {
   //     .text(function(d) { return d.name; });
 
   node.select("circle")
-      .style("fill", "blue");
+      .style("fill", "#00ADB5");
 
   svg.on("mousemove", function() {
   fisheye.focus(d3.mouse(this));
