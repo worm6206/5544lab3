@@ -46,7 +46,8 @@ var width = window.innerWidth-10,
     root;
 
     var paused = false,
-      showTag = false;
+      showTag = false,
+      mouseMode = false;
 
 var force = d3.layout.force()
     .linkDistance(80)
@@ -86,7 +87,7 @@ d3.json("graph.json", function(error, json) {
   update()
 })
 
-
+var ttt = true;
 function update(){
   // var n = data.children.children.length;
   // console.log(n);
@@ -94,7 +95,6 @@ function update(){
       links = d3.layout.tree().links(nodes);
 
 function idFindDeep(id){for(var x=0;x<nodes.length;x++){if(nodes[x].id==id) return nodes[x].depth}}
-idFindDeep(0);
 
   // Restart the force layout.
   force
@@ -113,6 +113,55 @@ idFindDeep(0);
       .attr("class", "link")
       .attr("stroke-width",3)
       .attr("stroke", "#303841");
+
+function getLinkByTarget(idd){link.each(function(d){if(d.target.id==idd)return d.target});}
+
+function removeLink(source,target){
+    for(var i=0;i<links.length;i++)
+    {
+        if(links[i].source.id == source && links[i].target.id == target)
+        {
+            links.splice(i,1);
+            break;
+        }
+    }
+};
+
+var findNodeIndex = function(id) {
+    for (var i=0;i<nodes.length;i++) {
+        if (nodes[i].id==id){
+            return i;
+        }
+        };
+};
+
+var findNode = function(id) {
+    for (var i in nodes) {
+        if (nodes[i]["id"] === id) return nodes[i];};
+};
+while(ttt){
+// links.push({"source":findNode(715),"target":findNode(3421)});
+ttt = false;
+  for(var i=0;i<links.length;i++)
+  {
+      if(links[i].target.id == 715)
+      {
+          // links.push({"source":findNode(715),"target":findNode(3421)});
+          // links.splice(i,1);
+          // nodes.splice(findNodeIndex(715),1);
+          // break;
+          // console.log(links[i]);
+          for(var j=0;j<links.length;j++)
+          {
+              if(links[j].target.id == 3421)
+              {
+                links[i].target = links[j].target;
+                nodes.splice(findNodeIndex(715),1);
+              }
+          }
+      }
+  }
+}
 
   // Update nodes.
   node = node.data(nodes, function(d) { return d.id; });
@@ -141,7 +190,7 @@ if(showTag){
     node.append("text")
         .attr("dy", ".35em")
         .attr("class", "tag")
-        .text(function(d) { return d.name+"/"+idFindDeep(d.id); });
+        .text(function(d) { return d.name+"/"+d.id; });
       }
 
   node.select("circle")
@@ -172,7 +221,7 @@ if(showTag){
 });
 
 
-}
+}//update
 
 document.onkeydown = checkKey;
 
@@ -214,9 +263,18 @@ function checkKey(e) {
           force.stop();
         }
     }
-    else if (e.keyCode == '37') {
-       // left arrow
-
+    else if (e.keyCode == '67') {
+       // C
+        if(mouseMode==false){
+          $('#click1').text("Find Mutual Friends");
+          $('#click2').text("");
+          mouseMode = true;
+        }else{
+          $('#click1').text("");
+          $('#click2').text("Collaps/Expand");
+          mouseMode = false;
+          // update();
+        }
     }
     else if (e.keyCode == '39') {
        // right arrow
@@ -303,15 +361,15 @@ function zoom() {
         <tbody>
           <tr>
             <td>Fisheye</td>
-            <td><span id="paused1" class="label label-primary"></span><span id="paused2" class="label label-danger">disabled</span></td>
+            <td><span id="paused1" class="label label-success"></span><span id="paused2" class="label label-danger">disabled</span></td>
           </tr>
           <tr>
             <td>Tags</td>
-            <td><span id="tag1" class="label label-primary"></span><span id="tag2" class="label label-danger">disbaled</span></td>
+            <td><span id="tag1" class="label label-success"></span><span id="tag2" class="label label-danger">disbaled</span></td>
           </tr>
           <tr>
             <td>Click Mode</td>
-            <td><span class="click"></span></td>
+            <td><span id="click1" class="label label-primary"></span><span id="click2" class="label label-warning">Collaps/Expand</span></td>
           </tr>
         </tbody>
       </table>

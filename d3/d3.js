@@ -3314,8 +3314,7 @@ function d3_svg_lineMonotoneTangents(points) {
   // not monotonic, it's possible that the slope will be infinite, so we protect
   // against NaN by setting the coordinate to zero.
   i = -1; while (++i <= j) {
-    s = (points[Math.min(j, i + 1)][0] - points[Math.max(0, i - 1)][0])
-      / (6 * (1 + m[i] * m[i]));
+    s = (points[Math.min(j, i + 1)][0] - points[Math.max(0, i - 1)][0]) / (6 * (1 + m[i] * m[i]));
     tangents.push([s || 0, m[i] * s || 0]);
   }
 
