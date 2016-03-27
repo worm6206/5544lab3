@@ -139,29 +139,38 @@ var findNode = function(id) {
     for (var i in nodes) {
         if (nodes[i]["id"] === id) return nodes[i];};
 };
-while(ttt){
-// links.push({"source":findNode(715),"target":findNode(3421)});
-ttt = false;
-  for(var i=0;i<links.length;i++)
-  {
-      if(links[i].target.id == 715)
-      {
-          // links.push({"source":findNode(715),"target":findNode(3421)});
-          // links.splice(i,1);
-          // nodes.splice(findNodeIndex(715),1);
-          // break;
-          // console.log(links[i]);
-          for(var j=0;j<links.length;j++)
-          {
-              if(links[j].target.id == 3421)
-              {
-                links[i].target = links[j].target;
-                nodes.splice(findNodeIndex(715),1);
-              }
-          }
-      }
-  }
-}
+// while(ttt){
+// // links.push({"source":findNode(715),"target":findNode(3421)});
+
+//   for(var i=0;i<links.length;i++)
+//   {
+//       if(links[i].target.id == 715)
+//       {
+//           // links.push({"source":findNode(715),"target":findNode(3421)});
+//           // links.splice(i,1);
+//           // nodes.splice(findNodeIndex(715),1);
+//           // break;
+//           // console.log(links[i]);
+//           for(var j=0;j<links.length;j++)
+//           {
+//               if(links[j].target.id == 3421)
+//               {
+//                 while(ttt){
+//                   // links[i].target = links[j].target;
+//                   // links.push(link[i]);
+//                   // links[links.length+1].source = links[j].target;
+//                   console.log(nodes[0]);
+//                   links.push({"source":links[i].target,"target":links[j].target});
+//                   // console.log(links[j]);
+//                   ttt = false;
+//                   // nodes.splice(findNodeIndex(715),1);
+//                   update();
+//                 }
+//               }
+//           }
+//       }
+//   }
+// }
 
   // Update nodes.
   node = node.data(nodes, function(d) { return d.id; });
@@ -263,22 +272,22 @@ function checkKey(e) {
           force.stop();
         }
     }
-    else if (e.keyCode == '67') {
-       // C
-        if(mouseMode==false){
-          $('#click1').text("Find Mutual Friends");
-          $('#click2').text("");
-          mouseMode = true;
-        }else{
-          $('#click1').text("");
-          $('#click2').text("Collaps/Expand");
-          mouseMode = false;
-          // update();
-        }
-    }
-    else if (e.keyCode == '39') {
-       // right arrow
-    }
+    // else if (e.keyCode == '67') {
+    //    // C
+    //     if(mouseMode==false){
+    //       $('#click1').text("Find Mutual Friends");
+    //       $('#click2').text("");
+    //       mouseMode = true;
+    //     }else{
+    //       $('#click1').text("");
+    //       $('#click2').text("Collaps/Expand");
+    //       mouseMode = false;
+    //       // update();
+    //     }
+    // }
+    // else if (e.keyCode == '39') {
+    //    // right arrow
+    // }
 
 }
 
@@ -347,10 +356,10 @@ function zoom() {
         <td>T</td>
         <td>Tags On/Off</td>
       </tr>
-      <tr>
+<!--       <tr>
         <td>C</td>
         <td>Change mouse modes</td>
-      </tr>
+      </tr> -->
     </tbody>
   </table>
 </div>
@@ -367,10 +376,10 @@ function zoom() {
             <td>Tags</td>
             <td><span id="tag1" class="label label-success"></span><span id="tag2" class="label label-danger">disbaled</span></td>
           </tr>
-          <tr>
+<!--           <tr>
             <td>Click Mode</td>
             <td><span id="click1" class="label label-primary"></span><span id="click2" class="label label-warning">Collaps/Expand</span></td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </div>
