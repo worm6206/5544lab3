@@ -86,11 +86,15 @@ d3.json("graph.json", function(error, json) {
   update()
 })
 
+
 function update(){
   // var n = data.children.children.length;
   // console.log(n);
   var nodes = flatten(root),
       links = d3.layout.tree().links(nodes);
+
+function idFindDeep(id){for(var x=0;x<nodes.length;x++){if(nodes[x].id==id) return nodes[x].depth}}
+idFindDeep(0);
 
   // Restart the force layout.
   force
@@ -120,17 +124,33 @@ function update(){
       .on("click", click);
 
   nodeEnter.append("circle")
-      .attr("r", 8);
+      .attr("id", function(d) { return d.id; })
+      .attr("class", function(d) { return "depth"+idFindDeep(d.id); })
+      .attr("r", function(d){
+        if(idFindDeep(d.id)==0) return 50;
+        else if(idFindDeep(d.id)==1) return 40;
+        else if(idFindDeep(d.id)==2) return 20;
+        else return 12
+      });
+
+// for(var ii =1; ii<nodes.length;ii++){
+//   $('#'+ii).addClass("test");
+// }
 
 if(showTag){
     node.append("text")
         .attr("dy", ".35em")
         .attr("class", "tag")
-        .text(function(d) { return d.name; });
+        .text(function(d) { return d.name+"/"+idFindDeep(d.id); });
       }
 
   node.select("circle")
-      .style("fill", "#00ADB5");
+      .style("fill", function(d){
+        if(idFindDeep(d.id)==0) return "#80D6FF";
+        else if(idFindDeep(d.id)==1) return "#EDF798";
+        else if(idFindDeep(d.id)==2) return "#FAB57A";
+        else return "#F06868"
+      });
 
   if (paused) {
     force.stop();
@@ -233,17 +253,21 @@ function click(d) {
   update();
 }
 
+
+
 // Returns a list of all nodes under the root.
 function flatten(root) {
-  var nodes = [], i = 0;
+  var i = 0, depth=0;
+  var nodes = [];
 
-  function recurse(node) {
-    if (node.children) node.children.forEach(recurse);
-    if (!node.id) node.id = ++i;
+  function recurse(node, deep) {
+    if (node.children) node.children.forEach(function (node){recurse(node, deep+1)});
+    if (!node.id) node.id = i++;
+    node.depth = deep;
     nodes.push(node);
   }
 
-  recurse(root);
+  recurse(root, depth);
   return nodes;
 }
 
